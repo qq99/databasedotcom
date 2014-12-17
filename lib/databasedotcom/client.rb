@@ -70,19 +70,12 @@ module Databasedotcom
       end
       @options.symbolize_keys!
 
-      if ENV['DATABASE_COM_URL']
-        url = URI.parse(ENV['DATABASE_COM_URL'])
-        url_options = Hash[url.query.split("&").map{|q| q.split("=")}].symbolize_keys!
-        self.host = url.host
-        self.client_id = url_options[:oauth_key]
-        self.client_secret = url_options[:oauth_secret]
-        self.username = url_options[:user]
-        self.password = url_options[:password]
-      else
-        self.client_id = ENV['DATABASEDOTCOM_CLIENT_ID'] || @options[:client_id]
-        self.client_secret = ENV['DATABASEDOTCOM_CLIENT_SECRET'] || @options[:client_secret]
-        self.host = ENV['DATABASEDOTCOM_HOST'] || @options[:host] || "login.salesforce.com"
-      end
+      self.username = @options[:username]
+      self.password = @options[:password]
+
+      self.client_id = ENV['DATABASEDOTCOM_CLIENT_ID'] || @options[:client_id]
+      self.client_secret = ENV['DATABASEDOTCOM_CLIENT_SECRET'] || @options[:client_secret]
+      self.host = ENV['DATABASEDOTCOM_HOST'] || @options[:host] || "login.salesforce.com"
 
       self.debugging = ENV['DATABASEDOTCOM_DEBUGGING'] || @options[:debugging]
       self.version = ENV['DATABASEDOTCOM_VERSION'] || @options[:version]
